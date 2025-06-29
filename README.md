@@ -16,31 +16,40 @@ API RESTful para transcrição de áudio/vídeo do YouTube para texto, construí
 ```bash
 docker-compose build
 docker-compose up
+```
 
 A API estará disponível em: http://localhost:3000
 O serviço whisper.cpp será usado automaticamente para transcrição.
 
 ### 3. Rodando localmente (sem Docker)
+
+```bash
 cd server
 npm install
 npm run start:dev
+```
 
 Atenção: Para transcrição funcionar, o serviço whisper precisa estar disponível e o diretório uploads/ deve existir na raiz do projeto.
 
 📦 Endpoints principais
+
 Transcrição do YouTube
 POST /transcribe/youtube
 Recebe uma URL de vídeo do YouTube e retorna a transcrição em texto.
 
 Exemplo de requisição:
+```bash
 {
   "youtubeUrl": "https://www.youtube.com/watch?v=XXXXXXXXXXX"
 }
+```
 
 Resposta:
+```bash
 {
   "transcription": "Texto transcrito do áudio/vídeo..."
 }
+```
 
 🛠️ Tecnologias
 NestJS
