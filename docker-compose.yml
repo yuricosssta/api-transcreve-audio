@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  whisper:
+    build: ./whisper-server
+    container_name: whisper_cpp
+    volumes:
+      - ./uploads:/data
+    entrypoint: []
+
+  app:
+    build: ./server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./uploads:/uploads
+    depends_on:
+      - whisper
