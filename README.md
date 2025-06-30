@@ -1,98 +1,137 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# API de Transcrição de Áudio do YouTube
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+API leve e containerizada que recebe um link de um vídeo do YouTube, extrai o áudio e retorna a transcrição completa utilizando o modelo Whisper da OpenAI.
 
-## Description
+## 📜 Tabela de Conteúdos
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+  - [Visão Geral](https://www.google.com/search?q=%23-vis%C3%A3o-geral)
+  - [Arquitetura](https://www.google.com/search?q=%23-arquitetura)
+  - [Tecnologias Utilizadas](https://www.google.com/search?q=%23-tecnologias-utilizadas)
+  - [Pré-requisitos](https://www.google.com/search?q=%23-pr%C3%A9-requisitos)
+  - [Instalação e Execução](https://www.google.com/search?q=%23-instala%C3%A7%C3%A3o-e-execu%C3%A7%C3%A3o)
+  - [Como Usar](https://www.google.com/search?q=%23-como-usar)
+  - [Configuração](https://www.google.com/search?q=%23-configura%C3%A7%C3%A3o)
+  - [Licença](https://www.google.com/search?q=%23-licen%C3%A7a)
 
-## Project setup
+## 🎯 Visão Geral
 
-```bash
-$ npm install
-```
+O objetivo deste projeto é fornecer um endpoint simples e eficiente para transcrever o conteúdo de vídeos. Ao invés de processar o vídeo ou o áudio localmente (o que consumiria muitos recursos), a API orquestra o processo:
 
-## Compile and run the project
+1.  Recebe uma URL do YouTube.
+2.  Usa o `yt-dlp` para baixar um stream de áudio em formato `.mp3`.
+3.  Envia este áudio para a API da OpenAI.
+4.  Retorna a transcrição em texto para o cliente.
 
-```bash
-# development
-$ npm run start
+Toda a aplicação roda dentro de um contêiner Docker, garantindo um ambiente de execução consistente e de fácil configuração.
 
-# watch mode
-$ npm run start:dev
+## 🏗️ Arquitetura
 
-# production mode
-$ npm run start:prod
-```
+O fluxo de dados da aplicação é o seguinte:
 
-## Run tests
+> `Cliente` → `POST /transcription` → `API NestJS` → `yt-dlp (download do áudio)` → `API da OpenAI (Whisper)` → `Retorno JSON` → `Cliente`
 
-```bash
-# unit tests
-$ npm run test
+## 🛠️ Tecnologias Utilizadas
 
-# e2e tests
-$ npm run test:e2e
+  - **Backend:** [NestJS](https://nestjs.com/)
+  - **Linguagem:** [TypeScript](https://www.typescriptlang.org/)
+  - **Containerização:** [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
+  - **Download de Mídia:** [yt-dlp](https://github.com/yt-dlp/yt-dlp) (através do wrapper `yt-dlp-wrap`)
+  - **Transcrição:** [API da OpenAI (Modelo Whisper)](https://platform.openai.com/docs/guides/speech-to-text)
+  - **Requisições HTTP:** [Axios](https://axios-http.com/)
 
-# test coverage
-$ npm run test:cov
-```
+## ✅ Pré-requisitos
 
-## Deployment
+Antes de começar, certifique-se de que você tem os seguintes softwares instalados em sua máquina:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+  - [Docker](https://www.docker.com/get-started/) e Docker Compose
+  - [Node.js](https://nodejs.org/en/) (v18 ou superior) - *Opcional, necessário apenas para desenvolvimento local fora do Docker.*
+  - Uma **chave de API da OpenAI**. Você pode obter a sua no [painel da OpenAI](https://platform.openai.com/api-keys).
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## ⚙️ Instalação e Execução
+
+Siga os passos abaixo para rodar a aplicação localmente usando Docker.
+
+**1. Clone o repositório:**
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+**2. Crie o arquivo de variáveis de ambiente:**
 
-## Resources
+Crie um arquivo chamado `.env` na raiz do projeto. Você pode copiar o arquivo de exemplo:
 
-Check out a few resources that may come in handy when working with NestJS:
+```bash
+cp .env.example .env
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Se o arquivo `.env.example` não existir, crie o `.env` com o seguinte conteúdo:
 
-## Support
+```env
+# .env
+OPENAI_API_KEY=sua_chave_de_api_da_openai_aqui
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+**3. Adicione sua chave de API:**
 
-## Stay in touch
+Abra o arquivo `.env` que você acabou de criar e substitua `sua_chave_de_api_da_openai_aqui` pela sua chave real da API da OpenAI.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+**4. Construa a imagem e inicie o contêiner:**
 
-## License
+Este comando irá construir a imagem Docker (instalando todas as dependências do sistema e do Node.js) e iniciar a API.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```bash
+docker-compose up --build
+```
+
+A API estará disponível em `http://localhost:3000`.
+
+## ▶️ Como Usar
+
+Para usar a API, envie uma requisição `POST` para o endpoint `/transcription` com a URL do vídeo no corpo da requisição.
+
+**Endpoint:** `POST /transcription`
+
+**Corpo da Requisição (JSON):**
+
+```json
+{
+  "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}
+```
+
+**Exemplo com cURL:**
+
+```bash
+curl --location --request POST 'http://localhost:3000/transcription' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}'
+```
+
+**Resposta de Sucesso (`200 OK`):**
+
+A API retornará um objeto JSON com o texto transcrito.
+
+```json
+{
+  "text": "We're no strangers to love. You know the rules and so do I. A full commitment's what I'm thinking of. You wouldn't get this from any other guy..."
+}
+```
+
+## 🔧 Configuração
+
+A principal configuração da aplicação é feita através do arquivo `.env`:
+
+  - `OPENAI_API_KEY`: **(Obrigatório)** Sua chave secreta para autenticação na API da OpenAI.
+
+## 📄 Licença
+
+Distribuído sob a Licença MIT. Veja o arquivo `LICENSE` para mais informações.
+
+-----
+
+*Este README foi gerado em: 29 de Junho de 2025.*
