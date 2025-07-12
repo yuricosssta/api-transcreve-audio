@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as FormData from 'form-data';
 import { firstValueFrom } from 'rxjs';
-import  YtDlpWrap  from 'yt-dlp-wrap';
+import YtDlpWrap from 'yt-dlp-wrap';
 
 @Injectable()
 export class TranscriptionService {
@@ -31,6 +31,7 @@ export class TranscriptionService {
 
     try {
       await this.downloadAudio(youtubeUrl, audioPath);
+      console.log("Áudio baixado com sucesso:", audioPath);
       const transcription = await this.sendToWhisper(audioPath);
       return { text: transcription };
     } catch (error) {
@@ -45,7 +46,7 @@ export class TranscriptionService {
 
   private downloadAudio(url: string, outputPath: string): Promise<void> {
     console.log(`Baixando áudio de: ${url}`);
-    
+
     const stream = this.ytDlp.execStream([
       url,
       '-f', 'bestaudio',
@@ -66,14 +67,14 @@ export class TranscriptionService {
       });
     });
   }
-  
+
   private async sendToWhisper(filePath: string): Promise<string> {
     const apiKey = this.configService.get<string>('OPENAI_API_KEY');
     if (!apiKey) {
       throw new InternalServerErrorException('Chave da API da OpenAI não configurada.');
     }
 
-    const formData = new FormData(); // Esta linha agora funcionará
+    const formData = new FormData();
     formData.append('file', fs.createReadStream(filePath));
     formData.append('model', 'whisper-1');
 
@@ -85,13 +86,14 @@ export class TranscriptionService {
     const url = 'https://api.openai.com/v1/audio/transcriptions';
 
     try {
+      console.log('Enviando áudio para transcrição...');
       const response = await firstValueFrom(
         this.httpService.post(url, formData, { headers })
       );
       return response.data.text;
     } catch (error) {
-        console.error('Erro ao chamar a API da OpenAI:', error.response?.data);
-        throw new InternalServerErrorException('Falha na comunicação com a API de transcrição.');
+      console.error('Erro ao chamar a API de transcrição:', error.response?.data);
+      throw new InternalServerErrorException('Falha na comunicação com a API de transcrição.');
     }
   }
 }
