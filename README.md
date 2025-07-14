@@ -1,10 +1,10 @@
 # API de Transcrição e Resumo de Áudio do YouTube
 
-API containerizada que recebe um link de vídeo do YouTube, extrai o áudio, retorna a transcrição completa utilizando o modelo Whisper da OpenAI e permite gerar um resumo didático em Markdown com GPT-4o.
+API containerizada que recebe um link de vídeo do YouTube, extrai o áudio, retorna a transcrição completa utilizando o modelo Whisper da OpenAI e permite gerar um resumo didático em Markdown com GPT-4.1.
 
 ---
 
-## 📜 Tabela de Conteúdos
+##  Tabela de Conteúdos
 
 - [Visão Geral](#visão-geral)
 - [Arquitetura](#arquitetura)
@@ -21,7 +21,7 @@ API containerizada que recebe um link de vídeo do YouTube, extrai o áudio, ret
 
 Esta API oferece endpoints para:
 - Transcrever o conteúdo de vídeos do YouTube usando Whisper (OpenAI).
-- Gerar um resumo didático e organizado em Markdown, adequado para jovens de 14 a 18 anos, usando GPT-4o.
+- Gerar um resumo didático e organizado em Markdown, adequado para jovens de 14 a 18 anos, usando GPT-4.1.
 
 O processo é totalmente automatizado:
 1. Recebe uma URL do YouTube.
@@ -34,7 +34,7 @@ A aplicação roda em contêiner Docker, garantindo ambiente consistente e fáci
 
 ---
 
-## 🏗️ Arquitetura
+##  Arquitetura
 
 Fluxo de dados:
 
@@ -45,7 +45,7 @@ Cliente → POST /summary/text → API NestJS → OpenAI GPT-4.1 → Retorno Mar
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 
 - **Backend:** [NestJS](https://nestjs.com/)
 - **Linguagem:** [TypeScript](https://www.typescriptlang.org/)
