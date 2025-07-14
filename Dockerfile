@@ -13,9 +13,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # RUN npm i yt-dlp-wrap
-# --- ESTA É A LINHA CORRIGIDA ---
 RUN apk add --no-cache python3 py3-pip && pip3 install yt-dlp --break-system-packages
-# ---------------------------------
 
 # Copia as dependências de produção
 COPY --from=builder /app/package*.json ./

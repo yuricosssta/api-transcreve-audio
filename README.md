@@ -40,7 +40,7 @@ Fluxo de dados:
 
 ```
 Cliente → POST /transcription → API NestJS → yt-dlp (download do áudio) → OpenAI Whisper → Retorno JSON → Cliente
-Cliente → POST /summary/text → API NestJS → OpenAI GPT-4o → Retorno Markdown → Cliente
+Cliente → POST /summary/text → API NestJS → OpenAI GPT-4.1 → Retorno Markdown → Cliente
 ```
 
 ---
@@ -52,7 +52,7 @@ Cliente → POST /summary/text → API NestJS → OpenAI GPT-4o → Retorno Mark
 - **Containerização:** [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
 - **Download de Mídia:** [yt-dlp](https://github.com/yt-dlp/yt-dlp) (via [yt-dlp-wrap](https://www.npmjs.com/package/yt-dlp-wrap))
 - **Transcrição:** [OpenAI Whisper API](https://platform.openai.com/docs/guides/speech-to-text)
-- **Resumo:** [OpenAI GPT-4o](https://platform.openai.com/docs/models/gpt-4o)
+- **Resumo:** [OpenAI GPT-4.1](https://platform.openai.com/docs/overview)
 - **Requisições HTTP:** [Axios](https://axios-http.com/)
 
 ---
@@ -69,8 +69,8 @@ Cliente → POST /summary/text → API NestJS → OpenAI GPT-4o → Retorno Mark
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd seu-repositorio
+   git clone https://github.com/yuricosssta/api-transcreve-audio.git
+   cd api-transcreve-audio
    ```
 
 2. **Crie o arquivo `.env`:**
@@ -146,4 +146,4 @@ Distribuído sob a Licença MIT.
 
 ---
 
-> Desenvolvido para
+> Desenvolvido para fins educacionais.

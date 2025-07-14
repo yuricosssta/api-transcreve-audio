@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: yt-transcriber-api
+    container_name: transcreve-audio-api
     ports:
       - "3000:3000"
     # Monta o arquivo .env de fora para dentro do container
