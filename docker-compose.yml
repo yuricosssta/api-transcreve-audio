@@ -6,10 +6,10 @@ services:
     container_name: transcreve-audio-api
     ports:
       - "8000:8000"
-    # Monta o arquivo .env de fora para dentro do container
+    
     env_file:
       - .env
     volumes:
-      # Volume para o diretório temporário, caso queira inspecionar
+    
       - ./temp:/app/temp
     restart: unless-stopped
